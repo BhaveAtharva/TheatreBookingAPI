@@ -1,0 +1,28 @@
+GENRES = (
+    
+('Action', 'Action'),
+('Adventure', 'Adventure'),
+('Animation', 'Animation'),
+('Biography', 'Biography'),
+('Comedy', 'Comedy'),
+('Crime', 'Crime'),
+('Documentary', 'Documentary'),
+('Drama', 'Drama'),
+('Family', 'Family'),
+('Fantasy', 'Fantasy'),
+('Film Noir', 'Film Noir'),
+('History', 'History'),
+('Horror', 'Horror'),
+('Music', 'Music'),
+('Musical', 'Musical'),
+('Mystery', 'Mystery'),
+('Romance', 'Romance'),
+('Sci-Fi', 'Sci-Fi'),
+('Short Film', 'Short Film'),
+('Sport', 'Sport'),
+('Superhero', 'Superhero'),
+('Thriller', 'Thriller'),
+('War', 'War'),
+('Western', 'Western'),
+
+)

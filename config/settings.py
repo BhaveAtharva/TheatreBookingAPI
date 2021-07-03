@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-
+import os
 from pathlib import Path
 from .credentials import creds
 
@@ -27,8 +27,7 @@ SECRET_KEY = 'django-insecure-py$k=y*p)4rw7-cc_yh^iu5m%lhp8d!)*o@4$$7gx4#vargtao
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0',
-                 'database-1.c1pikqr8idzr.ap-south-1.rds.amazonaws.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
     'booking',
     'movies',
     'theatre',
+    
 
 ]
 
@@ -75,6 +75,10 @@ TEMPLATES = [
     },
 ]
 
+
+# AUTH_USER_MODEL = 'users.CustomUser'
+
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
@@ -87,7 +91,7 @@ DATABASES = {
         'NAME': creds['NAME'],
         'USER': creds['USER'],
         'PASSWORD': creds['PASSWORD'],
-        'HOST': creds['HOST'],
+        'HOST': creds.get('HOST', 'localhost'),
         'PORT': creds['PORT']
     }
 }
@@ -130,8 +134,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static')]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'static/media')
+MEDIA_URL = '/media/'
