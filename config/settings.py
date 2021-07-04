@@ -43,9 +43,12 @@ INSTALLED_APPS = [
     'booking',
     'movies',
     'theatre',
+    'phonenumber_field'
     
 
 ]
+
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,7 +79,7 @@ TEMPLATES = [
 ]
 
 
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 WSGI_APPLICATION = 'config.wsgi.application'
