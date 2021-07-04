@@ -39,12 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'smart_selects',
+    'cities_light',
     'users',
     'booking',
     'movies',
     'theatre',
     'phonenumber_field'
     
+
 
 ]
 
@@ -81,6 +84,11 @@ TEMPLATES = [
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+
+# CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
+# CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'US']
+# CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3',
+#                                    'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT', ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -137,11 +145,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'static/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 MEDIA_URL = '/media/'

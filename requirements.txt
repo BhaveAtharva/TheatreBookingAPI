@@ -1,8 +1,15 @@
 asgiref==3.4.1
 dj-database-url==0.5.0
 Django==3.2.5
+django-autoslug==1.9.8
+django-cities-light==3.8.1
 django-phone-field==1.8.1
+django-smart-selects==1.5.9
 Pillow==8.3.0
+progressbar2==3.53.1
 psycopg2-binary==2.9.1
+python-utils==2.5.6
 pytz==2021.1
+six==1.16.0
 sqlparse==0.4.1
+Unidecode==1.2.0
