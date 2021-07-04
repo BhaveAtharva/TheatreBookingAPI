@@ -45,9 +45,13 @@ INSTALLED_APPS = [
     'booking',
     'movies',
     'theatre',
+    'phonenumber_field'
+
 
 
 ]
+
+PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,8 +82,13 @@ TEMPLATES = [
 ]
 
 
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
+
+# CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
+# CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'US']
+# CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3',
+#                                    'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT', ]
 
 # CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
 # CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'US']

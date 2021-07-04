@@ -1,4 +1,3 @@
-from enum import auto
 import uuid
 from django.db import models
 from cities_light.models import Country, Region, City
@@ -58,6 +57,6 @@ class Screen(models.Model):
         default=uuid.uuid4
     )
     theatre_id = models.ForeignKey(
-        Theatre, on_delete=models.SET_NULL, null=True)
+        Theatre, to_field="id", on_delete=models.SET_NULL, null=True)
     screen_format = models.CharField(max_length=20, choices=FORMAT)
     seats = models.IntegerField(verbose_name="number of seats")
