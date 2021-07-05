@@ -3,6 +3,7 @@ certifi==2021.5.30
 chardet==4.0.0
 coreapi==2.3.3
 coreschema==0.0.4
+Babel==2.9.1
 dj-database-url==0.5.0
 Django==3.2.5
 django-autoslug==1.9.8
@@ -22,11 +23,13 @@ Jinja2==3.0.1
 MarkupSafe==2.0.1
 openapi-codec==1.3.2
 packaging==21.0
+django-money==2.0
 phonenumbers==8.12.26
 Pillow==8.3.0
 progressbar2==3.53.1
 psycopg2-binary==2.9.1
 pyparsing==2.4.7
+py-moneyed==1.2
 python-utils==2.5.6
 pytz==2021.1
 requests==2.25.1
