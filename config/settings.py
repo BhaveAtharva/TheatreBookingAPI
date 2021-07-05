@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'smart_selects',
     'cities_light',
+    'djmoney',
     'users',
     'booking',
     'movies',
@@ -85,10 +86,10 @@ TEMPLATES = [
 AUTH_USER_MODEL = 'users.CustomUser'
 
 
-# CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
-# CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'US']
-# CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3',
-#                                    'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT', ]
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'US', 'IN']
+CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3',
+                                   'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT', ]
 
 # CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
 # CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'US']

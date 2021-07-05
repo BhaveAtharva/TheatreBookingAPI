@@ -1,7 +1,14 @@
+
 import uuid
+import django.utils.timezone
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.db.models import Q, F
 from cities_light.models import Country, Region, City
+from django.db.models.expressions import F
 from smart_selects.db_fields import ChainedForeignKey
+from djmoney.models.fields import MoneyField
+from movies.models import Movie
 # Create your models here.
 
 
@@ -12,7 +19,8 @@ class Theatre(models.Model):
         editable=False,
         default=uuid.uuid4)
     name = models.CharField(max_length=200, null=True)
-    screen_number = models.IntegerField(verbose_name="number of screens")
+    screen_number = models.PositiveIntegerField(
+        verbose_name="number of screens")
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
     state_region = ChainedForeignKey(
         Region, chained_field="country",
@@ -36,7 +44,9 @@ class Theatre(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return str(self.name)
+        lst_str = str(self.id).split('-')
+        code = "".join(lst_str[:2])
+        return ("{}-{}".format(self.name, code))
 
 
 class Screen(models.Model):
@@ -56,7 +66,49 @@ class Screen(models.Model):
         editable=False,
         default=uuid.uuid4
     )
+    screen_name = models.CharField(max_length=10)
     theatre_id = models.ForeignKey(
-        Theatre, to_field="id", on_delete=models.SET_NULL, null=True)
+        Theatre, to_field="id", on_delete=models.CASCADE,)
     screen_format = models.CharField(max_length=20, choices=FORMAT)
-    seats = models.IntegerField(verbose_name="number of seats")
+    seats = models.PositiveIntegerField(verbose_name="number of seats")
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        lst_str = str(self.id).split('-')
+        code = "".join(lst_str[0])
+        return ("S#{}".format(code))
+
+
+class Seat(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,
+                          primary_key=True, editable=False,)
+    row = models.CharField(max_length=10)
+    seat_number = models.PositiveIntegerField()
+    cost = MoneyField(max_digits=10, decimal_places=2, default_currency='INR')
+    theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
+    screen_id = ChainedForeignKey(Screen, chained_field='theatre_id',
+                                  chained_model_field='theatre_id', show_all=False, auto_choose=True, sort=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        unique_together = [['row', 'seat_number', 'screen_id']]
+
+
+class Screening(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
+    screen_id = ChainedForeignKey(Screen, chained_field='theatre_id',
+                                  chained_model_field='theatre_id', show_all=False, auto_choose=True, sort=True)
+    movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    scheduled_date = models.DateField(default=django.utils.timezone.now)
+    start_time = models.TimeField(default=django.utils.timezone.now)
+    end_time = models.TimeField(default=django.utils.timezone.now)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def clean(self):
+        if self.start_time >= self.end_time:
+            raise ValidationError('Start Time should be before End Time')
+        return super().clean()
+
+    class Meta:
+        unique_together = [['scheduled_date', 'screen_id', 'start_time', ]]

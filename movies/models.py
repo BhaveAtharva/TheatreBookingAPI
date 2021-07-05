@@ -5,9 +5,8 @@ from .Genres import GENRES
 # Create your models here.
 
 
-
 class Genre(models.Model):
-    
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -17,7 +16,6 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.genre
-
 
 
 class Movie(models.Model):
@@ -46,5 +44,9 @@ class Movie(models.Model):
     format = models.CharField(max_length=20, choices=FORMAT)
     length = models.DurationField()
     certification = models.CharField(max_length=20, choices=CERTIFICATION)
-    movie_cover = models.ImageField(upload_to = 'movie_covers/')
+    movie_cover = models.ImageField(upload_to='movie_covers/')
     genre = models.ManyToManyField(Genre, null=True)
+
+# for Screening Testing
+    def __str__(self):
+        return self.name
