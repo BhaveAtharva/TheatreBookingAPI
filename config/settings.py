@@ -39,13 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_swagger',
+    "drf_yasg",
     'smart_selects',
     'cities_light',
     'users',
     'booking',
     'movies',
     'theatre',
-    'phonenumber_field'
+    'phonenumber_field',
+    'mptt'
     
 
 

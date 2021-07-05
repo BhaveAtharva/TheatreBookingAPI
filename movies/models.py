@@ -48,3 +48,6 @@ class Movie(models.Model):
     certification = models.CharField(max_length=20, choices=CERTIFICATION)
     movie_cover = models.ImageField(upload_to = 'movie_covers/')
     genre = models.ManyToManyField(Genre, null=True)
+
+    def __str__(self):
+        return str(self.name+' '+self.format+' '+self.language)

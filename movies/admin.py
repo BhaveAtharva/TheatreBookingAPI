@@ -5,7 +5,10 @@ from django.db import models
 
 from .models import Movie, Genre
 
+
 class MovieAdmin(admin.ModelAdmin):
+
+
     list_display = [
         'name',
         'release_date',
@@ -14,6 +17,7 @@ class MovieAdmin(admin.ModelAdmin):
         'length',
         'certification',
         'movie_cover',
+        'genres'
     ]
     fields = ('name',
         'release_date',
@@ -24,6 +28,11 @@ class MovieAdmin(admin.ModelAdmin):
         'movie_cover',
         'genre')
     
+    def genres(self, obj):
+        genres =obj.genre.all()
+        genres = ', '.join([str(i) for i in genres])
+        return genres
+
     formfield_overrides = {
         models.ManyToManyField: {
             'widget': CheckboxSelectMultiple 
@@ -31,5 +40,14 @@ class MovieAdmin(admin.ModelAdmin):
     }
     radio_fields = {'format': admin.HORIZONTAL}
 
+class MovieInline(admin.TabularInline):
+    model = Movie.genre.through
+
+class GenreAdmin(admin.ModelAdmin):
+    model = Genre
+    inlines = [
+        MovieInline
+    ]
+
 admin.site.register(Movie, MovieAdmin)
-admin.site.register(Genre)
+admin.site.register(Genre, GenreAdmin)
