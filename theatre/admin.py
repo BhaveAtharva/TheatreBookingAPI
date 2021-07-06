@@ -17,11 +17,11 @@ class ScreenAdmin(admin.ModelAdmin):
 
 class SeatAdmin(admin.ModelAdmin):
     list_display = ['id', 'row',
-                    'seat_number', 'screen_id', 'theatre_id', 'cost', 'date_created', ]
+                    'seat_number', 'screen_id', 'theatre_id', 'cost', 'reservation_id', 'is_reserved']
 
 
 class ScreeningAdmin(admin.ModelAdmin):
-    list_display = ['id', 'scheduled_date', 'start_time', 'end_time', 'theatre_id',
+    list_display = ['id', '__str__', 'scheduled_date', 'start_time', 'end_time', 'theatre_id',
                     'screen_id', 'movie_id', 'date_created', ]
 
 
