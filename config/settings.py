@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_swagger',
-    "drf_yasg",
+    'rest_framework.authtoken',
+    'django.contrib.sites',
+    'djoser',
+    'drf_yasg',
     'smart_selects',
     'cities_light',
     'djmoney',
@@ -51,8 +54,6 @@ INSTALLED_APPS = [
     'theatre',
     'phonenumber_field',
     'mptt'
-    
-
 
 ]
 
@@ -87,7 +88,7 @@ TEMPLATES = [
 ]
 
 
-AUTH_USER_MODEL = 'users.CustomUser'
+
 
 
 CITIES_LIGHT_TRANSLATION_LANGUAGES = ['fr', 'en']
@@ -151,6 +152,24 @@ USE_L10N = True
 USE_TZ = True
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',)
+}
+
+DJOSER = {
+    'LOGIN_FIELD' : 'email'
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -163,3 +182,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 MEDIA_URL = '/media/'
+
+SWAGGER_SETTINGS = {"SECURITY_DEFINITIONS": {"Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}}}
+
+
+AUTH_USER_MODEL = 'users.CustomUser'
