@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Screening, Seat, Theatre, Screen
+from .models import ScreeningTime, Seat, Theatre, Screen
 
 
 class TheatreAdmin(admin.ModelAdmin):
@@ -17,10 +17,10 @@ class ScreenAdmin(admin.ModelAdmin):
 
 class SeatAdmin(admin.ModelAdmin):
     list_display = ['id', 'row',
-                    'seat_number', 'screen_id', 'theatre_id', 'cost', 'reservation_id', 'is_reserved']
+                    'seat_number', 'screen_id', 'cost', ]
 
 
-class ScreeningAdmin(admin.ModelAdmin):
+class ScreeningTimeAdmin(admin.ModelAdmin):
     list_display = ['id', '__str__', 'scheduled_date', 'start_time', 'end_time', 'theatre_id',
                     'screen_id', 'movie_id', 'date_created', ]
 
@@ -28,4 +28,4 @@ class ScreeningAdmin(admin.ModelAdmin):
 admin.site.register(Theatre, TheatreAdmin)
 admin.site.register(Screen, ScreenAdmin)
 admin.site.register(Seat, SeatAdmin)
-admin.site.register(Screening, ScreeningAdmin)
+admin.site.register(ScreeningTime, ScreeningTimeAdmin)

@@ -1,9 +1,10 @@
+from operator import mod
 from django.db.models.fields import DateField, DateTimeField
 from movies.models import Movie
 import uuid
 # from django.contrib.auth.models import User
 from django.db import models
-from theatre.models import Screen, Screening, Seat, Theatre
+from theatre.models import Screen, ScreeningTime, Seat, Theatre
 from smart_selects.db_fields import ChainedForeignKey
 from users.models import CustomUser
 from djmoney.models.fields import MoneyField
@@ -19,17 +20,32 @@ class Reservation(models.Model):
     theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
     screen_id = ChainedForeignKey(Screen, chained_field='theatre_id', chained_model_field='theatre_id',
                                   show_all=False, auto_choose=True, sort=True, on_delete=models.CASCADE)
-    screening_id = models.ForeignKey(
-        Screening, on_delete=models.SET_NULL, null=True)
-
+    screening_time_id = ChainedForeignKey(ScreeningTime, chained_field='screen_id', chained_model_field='screen_id',
+                                          show_all=False, auto_choose=True, sort=True, on_delete=models.SET_NULL, null=True)
     total_price = MoneyField(null=True,
                              max_digits=10, decimal_places=2, default_currency='INR')
     paid = models.BooleanField(default=False)
-    active_reservation = models.BooleanField(default=True)
+    reservation_is_active = models.BooleanField(default=True)
     date_created = DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return str(self.id)
+
+
+class SeatsReserved(ScreeningTime):
+    object = Seat()
+    show_time_id = models.ForeignKey(
+        ScreeningTime, on_delete=models.SET_NULL, null=True, related_name="seat_show_time")
+    reservation_id = models.ForeignKey(
+        Reservation, null=True, blank=True, on_delete=models.SET_NULL,)
+    is_reserved = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.reservation_id is None:
+            self.is_reserved = False
+        else:
+            self.is_reserved = True
+        return super(SeatsReserved, self).save(*args, **kwargs)
 
 
 class SeatReservationHistory(models.Model):
@@ -38,6 +54,6 @@ class SeatReservationHistory(models.Model):
     reservation_id = models.ForeignKey(
         Reservation, on_delete=models.CASCADE, null=True)
     screen_id = models.ForeignKey(Screen, on_delete=models.SET_NULL, null=True)
-    screening_id = ChainedForeignKey(Screening, chained_field='screen_id',
-                                     chained_model_field='screen_id', on_delete=models.SET_NULL, null=True)
+    screening_time_id = ChainedForeignKey(ScreeningTime, chained_field='screen_id',
+                                          chained_model_field='screen_id', on_delete=models.SET_NULL, null=True)
     date_created = DateTimeField(auto_now_add=True, null=True)

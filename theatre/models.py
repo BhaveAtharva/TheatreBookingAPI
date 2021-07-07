@@ -48,6 +48,9 @@ class Theatre(models.Model):
         code = "".join(lst_str[:2])
         return ("{}-{}".format(self.name, code))
 
+    class Meta:
+        ordering = ['date_created']
+
 
 class Screen(models.Model):
 
@@ -78,6 +81,9 @@ class Screen(models.Model):
         code = "".join(lst_str[0])
         return ("S#{}".format(code))
 
+    class Meta:
+        ordering = ['date_created']
+
 
 class Seat(models.Model):
     upercase_alpha = RegexValidator(
@@ -88,29 +94,18 @@ class Seat(models.Model):
     row = models.CharField(max_length=10, validators=[upercase_alpha])
     seat_number = models.PositiveIntegerField()
     cost = MoneyField(max_digits=10, decimal_places=2, default_currency='INR')
-    theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
-    screen_id = ChainedForeignKey(Screen, chained_field='theatre_id',
-                                  chained_model_field='theatre_id', show_all=False, auto_choose=True, sort=True)
-    reservation_id = models.ForeignKey(
-        'booking.Reservation', null=True, blank=True, on_delete=models.SET_NULL,)
-    is_reserved = models.BooleanField(default=False)
+    screen_id = models.ForeignKey(Screen,on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-
-    def save(self, *args, **kwargs):
-        if self.reservation_id is None:
-            self.is_reserved = False
-        else:
-            self.is_reserved = True
-        return super(Seat, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.id)
 
     class Meta:
+        ordering = ['date_created']
         unique_together = [['row', 'seat_number', 'screen_id']]
 
 
-class Screening(models.Model):
+class ScreeningTime(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
     screen_id = ChainedForeignKey(Screen, chained_field='theatre_id',

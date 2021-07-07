@@ -44,7 +44,7 @@ class Movie(models.Model):
     format = models.CharField(max_length=20, choices=FORMAT)
     length = models.DurationField()
     certification = models.CharField(max_length=20, choices=CERTIFICATION)
-    movie_cover = models.ImageField(upload_to='movie_covers/')
+    movie_cover = models.ImageField(upload_to='movie_covers/', null=True)
     genre = models.ManyToManyField(Genre, null=True)
 
     def __str__(self):

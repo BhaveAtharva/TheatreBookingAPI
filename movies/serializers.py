@@ -13,11 +13,12 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class MovieSerializerResponse(serializers.ModelSerializer):
     genre_name = GenreSerializer(many=True, source='genre', read_only=True)
-
+    
 
     class Meta:
         model = Movie
         fields = [
+            'id', 
             'name',
             'release_date',
             'language',
