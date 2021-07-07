@@ -1,11 +1,11 @@
-
 import uuid
+from django.core import validators
+from django.db.models.expressions import F
 import django.utils.timezone
 from django.db import models
+from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
-from django.db.models import Q, F
 from cities_light.models import Country, Region, City
-from django.db.models.expressions import F
 from smart_selects.db_fields import ChainedForeignKey
 from djmoney.models.fields import MoneyField
 from movies.models import Movie
@@ -80,15 +80,31 @@ class Screen(models.Model):
 
 
 class Seat(models.Model):
+    upercase_alpha = RegexValidator(
+        r'^[A-Z]*$', 'Only Alphabetic(Uppercase/Capital) characters are allowed.')
+
     id = models.UUIDField(default=uuid.uuid4,
                           primary_key=True, editable=False,)
-    row = models.CharField(max_length=10)
+    row = models.CharField(max_length=10, validators=[upercase_alpha])
     seat_number = models.PositiveIntegerField()
     cost = MoneyField(max_digits=10, decimal_places=2, default_currency='INR')
     theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
     screen_id = ChainedForeignKey(Screen, chained_field='theatre_id',
                                   chained_model_field='theatre_id', show_all=False, auto_choose=True, sort=True)
+    reservation_id = models.ForeignKey(
+        'booking.Reservation', null=True, blank=True, on_delete=models.SET_NULL,)
+    is_reserved = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.reservation_id is None:
+            self.is_reserved = False
+        else:
+            self.is_reserved = True
+        return super(Seat, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.id)
 
     class Meta:
         unique_together = [['row', 'seat_number', 'screen_id']]
@@ -104,6 +120,9 @@ class Screening(models.Model):
     start_time = models.TimeField(default=django.utils.timezone.now)
     end_time = models.TimeField(default=django.utils.timezone.now)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return ('{}, {}-{}'.format(self.scheduled_date, self.start_time, self.end_time))
 
     def clean(self):
         if self.start_time >= self.end_time:
