@@ -1,5 +1,5 @@
 from operator import mod
-from django.db.models.fields import DateField, DateTimeField
+from django.db.models.fields import DateField, DateTimeField, UUIDField
 from movies.models import Movie
 import uuid
 # from django.contrib.auth.models import User
@@ -32,10 +32,12 @@ class Reservation(models.Model):
         return str(self.id)
 
 
-class SeatsReserved(ScreeningTime):
-    object = Seat()
+class SeatsReserved(models.Model):
+    seats_reserved_id = UUIDField(default=uuid.uuid4, primary_key=True, editable=False,)
+    seat_id  = models.ForeignKey(Seat, on_delete=models.SET_NULL, null=True)
+
     show_time_id = models.ForeignKey(
-        ScreeningTime, on_delete=models.SET_NULL, null=True, related_name="seat_show_time")
+        ScreeningTime, on_delete=models.SET_NULL, null=True,)
     reservation_id = models.ForeignKey(
         Reservation, null=True, blank=True, on_delete=models.SET_NULL,)
     is_reserved = models.BooleanField(default=False)
@@ -46,6 +48,9 @@ class SeatsReserved(ScreeningTime):
         else:
             self.is_reserved = True
         return super(SeatsReserved, self).save(*args, **kwargs)
+    
+    class Meta:
+        unique_together = [['seat_id', 'show_time_id']]
 
 
 class SeatReservationHistory(models.Model):

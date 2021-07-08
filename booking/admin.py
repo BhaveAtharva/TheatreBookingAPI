@@ -10,7 +10,7 @@ class ReservationAdmin(admin.ModelAdmin):
 
 
 class SeatReservedAdmin(admin.ModelAdmin):
-    list_display = ['id', 'show_time_id', 'reservation_id', 'is_reserved']
+    list_display = ['seats_reserved_id', 'seat_id', 'show_time_id', 'reservation_id', 'is_reserved']
 
 
 class SeatReservationHistoryAdmin(admin.ModelAdmin):
