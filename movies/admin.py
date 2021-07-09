@@ -10,6 +10,7 @@ class MovieAdmin(admin.ModelAdmin):
 
 
     list_display = [
+        'id',
         'name',
         'release_date',
         'language',
@@ -50,4 +51,4 @@ class GenreAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(Movie, MovieAdmin)
-admin.site.register(Genre, GenreAdmin)
+admin.site.register(Genre)

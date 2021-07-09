@@ -17,6 +17,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
 
     list_display = [
+        'id',
         'username',
         'first_name',
         'last_name',

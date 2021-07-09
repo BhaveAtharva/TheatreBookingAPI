@@ -34,12 +34,12 @@ class Reservation(models.Model):
 
 class SeatsReserved(models.Model):
     seats_reserved_id = UUIDField(default=uuid.uuid4, primary_key=True, editable=False,)
+    theatre_id = models.ForeignKey(Theatre, on_delete=models.SET_NULL, null=True)
+    screen_id = models.ForeignKey(Screen, on_delete=models.SET_NULL, null=True)
     seat_id  = models.ForeignKey(Seat, on_delete=models.SET_NULL, null=True)
-
-    show_time_id = models.ForeignKey(
-        ScreeningTime, on_delete=models.SET_NULL, null=True,)
-    reservation_id = models.ForeignKey(
-        Reservation, null=True, blank=True, on_delete=models.SET_NULL,)
+    show_time_id = models.ForeignKey(ScreeningTime, on_delete=models.SET_NULL, null=True,)
+    reservation_id = models.ForeignKey(Reservation, null=True, blank=True, on_delete=models.SET_NULL,)
+    payment_processing=models.BooleanField(default=False)
     is_reserved = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):

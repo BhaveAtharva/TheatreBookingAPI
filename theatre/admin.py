@@ -5,12 +5,12 @@ from .models import ScreeningTime, Seat, Theatre, Screen
 
 
 class TheatreAdmin(admin.ModelAdmin):
-    list_display = ['name', '__str__', 'screen_number',
+    list_display = ['id', 'name', '__str__', 'screen_number',
                     'date_created', 'city', 'state_region', 'country', 'pincode', 'address']
 
 
 class ScreenAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'screen_name',
+    list_display = ['id', '__str__', 'screen_name',
                     'theatre_id', 'screen_format', 'seats', 'date_created', ]
     radio_fields = {'screen_format': admin.HORIZONTAL}
 

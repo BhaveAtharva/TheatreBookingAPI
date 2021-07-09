@@ -47,6 +47,7 @@ urlpatterns = [
     url(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     url(r'^chaining/', include('smart_selects.urls')),
     path('', include('movies.urls')),
+    path('booking/', include('booking.urls')),
     # path('user', include('users.urls')),
     url(r'^user/', include('users.urls')), 
     url(r'^auth/', include('djoser.urls')),
