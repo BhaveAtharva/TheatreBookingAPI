@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'cities_light',
     'djmoney',
     'users',
+    'theatre_booking',
     'booking',
     'movies',
     'theatre',
@@ -171,7 +172,7 @@ DJOSER = {
         'user': 'users.serializers.CustomUserCreateSerializer',
         'user_delete': 'users.serializers.UserDeleteSerializer'
     }
-    
+
 }
 
 # Static files (CSS, JavaScript, Images)
