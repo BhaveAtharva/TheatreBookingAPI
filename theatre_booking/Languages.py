@@ -1,5 +1,3 @@
-from django.db import migrations
-
 LANGUAGES = [
     ("aa", (u"Afar")),
     ("ab", (u"Abkhazian")),
@@ -8117,5 +8115,3 @@ LANGUAGES = [
     ("zza", (u"Zaza")),
     ("zzj", (u"Zuojiang Zhuang")),
 ]
-
-
