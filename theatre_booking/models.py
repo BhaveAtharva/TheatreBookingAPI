@@ -11,12 +11,13 @@ from users.models import CustomUser
 from django.db.models.fields import UUIDField
 # Create your models here.
 
+
 class Region(models.Model):
     id = UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     city_name = SlugField(max_length=255, unique=True)
     state_name = CharField(max_length=255,)
     country_name = CharField(max_length=255,)
-    date_created = DateTimeField(auto_now_add=True,)
+    date_created = DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return ('{}, {}, {}'.format(self.city_name, self.state_name, self.country_name))
@@ -54,7 +55,7 @@ class Movie(models.Model):
     certification = CharField(max_length=20, choices=CERTIFICATION)
     genre_id = ManyToManyField(Genre, null=True)
     in_theatres = BooleanField(default=True)
-    date_created = DateTimeField(auto_now_add=True,)
+    date_created = DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return ('{} {} {}'.format(self.name, self.format, self.language))
@@ -64,15 +65,18 @@ class Theatre(models.Model):
     id = UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     name = CharField(max_length=255,)
     region_id = ForeignKey(Region, on_delete=models.PROTECT)
-    date_created = DateTimeField(auto_now_add=True,)
+    date_created = DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.name
+
 
 class Screen(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=10)
     theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
 
 class Showtime(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -81,7 +85,14 @@ class Showtime(models.Model):
     theatre_id = models.ForeignKey(Theatre, on_delete=models.CASCADE)
     screen_id = models.ForeignKey(Screen, on_delete=models.CASCADE)
     movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
 
+
+class Ticket(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.ForeignKey(
+        CustomUser, on_delete=models.SET_NULL, null=True)
+    created = models.DateTimeField(auto_created=True, null=True)
 
 
 class Seat(models.Model):
@@ -89,19 +100,10 @@ class Seat(models.Model):
     seat_row = models.CharField(max_length=5)
     seat_column = models.PositiveIntegerField()
     is_booked = models.BooleanField(default=False, null=False)
-    Ticket_id = models.ForeignKey(Ticket, on_delete=models.SET_NULL)
+    ticket_id = models.ForeignKey(Ticket, on_delete=models.SET_NULL, null=True)
     price = models.FloatField()
-    checkout_id = models.CharField()
+    checkout_id = models.CharField(max_length=255, null=True)
 
     def save(self, *args, **kwargs):
         if self.checkout_id is not None:
             self.is_booked = True
-
-
-class Ticket(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.SET_NULL)
-    created = models.DateTimeField(auto_created=True)
-    
-
-
