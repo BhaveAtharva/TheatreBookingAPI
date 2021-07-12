@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.forms import CheckboxSelectMultiple
 from django.db import models
 from django.contrib.auth.models import Group
-from .models import CustomUser, Comments, UserReview
+from .models import CustomUser
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserAdminCreationForm, UserAdminChangeForm
@@ -60,16 +60,16 @@ class CustomUserAdmin(BaseUserAdmin):
         }
     }
 
-class UserReviewAdmin(admin.ModelAdmin):
-    list_display = [
-        'user_id',
-        'rating',
-        'review_date',
-        'movie_id',
-        'review',
-    ]
+# class UserReviewAdmin(admin.ModelAdmin):
+#     list_display = [
+#         'user_id',
+#         'rating',
+#         'review_date',
+#         'movie_id',
+#         'review',
+#     ]
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Comments, MPTTModelAdmin)
-admin.site.register(UserReview, UserReviewAdmin)
+# admin.site.register(Comments, MPTTModelAdmin)
+# admin.site.register(UserReview, UserReviewAdmin)

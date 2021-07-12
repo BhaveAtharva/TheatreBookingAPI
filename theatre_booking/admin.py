@@ -1,8 +1,8 @@
 from django.db import models
 from django.forms import CheckboxSelectMultiple
-from theatre_booking.models import Genre, Movie, Region, Screen, Seat, Showtime, Theatre, Ticket
+# from theatre_booking.models import Genre, Movie, Region, Screen, Seat, Showtime, Theatre, Ticket
 from django.contrib import admin
-
+from .models import Genre, Movie, Region, Screen, Seat, Showtime, Theatre, Ticket, UserReview, Comments
 # Register your models here.
 
 
@@ -51,7 +51,7 @@ class ScreenAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'theatre_id', 'date_created']
 
 
-class ShowTimeAdmin(admin.ModelAdmin):
+class ShowtimeAdmin(admin.ModelAdmin):
     model = Showtime
     list_display = ['id', 'start_time', 'end_time',
                     'theatre_id', 'screen_id', 'movie_id', 'date_created']
@@ -68,11 +68,35 @@ class TicketAdmin(admin.ModelAdmin):
     list_display = ['id', 'user_id', 'created', ]
 
 
+class UserReviewAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'review',
+        'rating',
+        'review_date',
+        'movie_id',
+        'user_id',
+    ]
+
+
+class CommentsAdmin(admin.ModelAdmin):
+    list_display = [
+        'id',
+        'user_review',
+        'user_id',
+        'parent',
+        'comment',
+        'comment_date',
+    ]
+
+
 admin.site.register(Region, RegionAdmin)
+admin.site.register(Genre, GenreAdmin)
 admin.site.register(Movie, MovieAdmin)
-admin.site.register(Genre)
 admin.site.register(Theatre, TheatreAdmin)
 admin.site.register(Screen, ScreenAdmin)
-admin.site.register(Showtime, ShowTimeAdmin)
-admin.site.register(Seat, SeatAdmin)
+admin.site.register(Showtime, ShowtimeAdmin)
 admin.site.register(Ticket, TicketAdmin)
+admin.site.register(Seat, SeatAdmin)
+admin.site.register(UserReview, UserReviewAdmin)
+admin.site.register(Comments, CommentsAdmin)

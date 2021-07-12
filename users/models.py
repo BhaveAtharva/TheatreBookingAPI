@@ -4,8 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 import uuid
-from mptt.models import MPTTModel, TreeForeignKey
-from movies.models import Movie
+
 
 class UserManager(BaseUserManager):
     
@@ -76,33 +75,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
 
 
-class UserReview(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        editable=False,
-        default=uuid.uuid4)
-    review = models.TextField()
-    rating = models.FloatField()
-    review_date = models.DateTimeField(auto_now_add=True)
-    movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name='Movie')
-    user_id = models.ForeignKey(CustomUser, null=True, on_delete=SET_NULL, verbose_name='user')
-
-    def __str__(self):
-        return str(self.user_id)
-
-
-class Comments(MPTTModel):
-    id = models.UUIDField(
-        primary_key=True,
-        editable=False,
-        default=uuid.uuid4)
-    user_review = models.ForeignKey(UserReview, null=True, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(CustomUser, null=True, on_delete=SET_NULL)
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    comment = models.TextField()
-    comment_date = models.DateTimeField(auto_now_add=True)
-
-
-    def __str__(self):
-        return str('comment by '+str(self.user_id))
     
