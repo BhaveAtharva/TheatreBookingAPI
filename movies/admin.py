@@ -3,7 +3,7 @@ from django.forms import CheckboxSelectMultiple
 from django.db import models
 # Register your models here.
 
-from .models import Language, Movie, Genre
+from .models import Movie, Genre
 
 
 class MovieAdmin(admin.ModelAdmin):
@@ -52,11 +52,11 @@ class GenreAdmin(admin.ModelAdmin):
     ]
 
 
-class LanguagesAdmin(admin.ModelAdmin):
-    model = Language
-    fields = ['language_code', 'language_name', ]
+# class LanguagesAdmin(admin.ModelAdmin):
+#     model = Language
+#     fields = ['language_code', 'language_name', ]
 
 
-admin.site.register(Language, LanguagesAdmin)
+# admin.site.register(Language, LanguagesAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Genre)

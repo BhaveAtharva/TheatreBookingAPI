@@ -26,11 +26,11 @@ class Genre(models.Model):
 #         return super(Language, self).bulk_create(objs, batch_size=batch_size, ignore_conflicts=False)
 
 
-class Language(models.Model):
-    language_code = models.CharField(
-        max_length=3, primary_key=True, default='000')
-    language_name = models.CharField(max_length=255, default='BLANK000')
-    # objects = LanguageManager()
+# class Language(models.Model):
+#     language_code = models.CharField(
+#         max_length=3, primary_key=True, default='000')
+#     language_name = models.CharField(max_length=255, default='BLANK000')
+#     # objects = LanguageManager()
 
 
 class Movie(models.Model):

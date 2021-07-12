@@ -49,7 +49,7 @@ class Movie(models.Model):
     format = CharField(max_length=10, choices=FORMAT)
     language = CharField(max_length=100, choices=LANGUAGES)
     certification = CharField(max_length=20, choices=CERTIFICATION)
-    genre_id = ManyToManyField(Genre)
+    genre_id = ManyToManyField(Genre, null=True)
     in_theatres = BooleanField(default=True)
     date_created = DateTimeField(auto_now_add=True,)
 
