@@ -1,4 +1,12 @@
+from django.conf.urls import url
 from django.urls import path, include
 
 from . import views
-urlpatterns = []
+urlpatterns = [
+    path('home/', views.HomeViewsets.as_view({'get': 'home_region'})),
+    path('home/<slug:region>/movies/',
+         views.HomeViewsets.as_view({'get': 'home_movies'})),
+    path('home/<slug:region>/movies/<str:id>/showtime/',
+         views.ShowtimeViewsets.as_view({'get': 'get_theatre'})),
+    # path('movies/', views.MovieViewsets.as_view({'get': 'get_movies'})),
+]

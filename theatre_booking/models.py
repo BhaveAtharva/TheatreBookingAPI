@@ -1,10 +1,13 @@
 import uuid
 from django.db import models
 import uuid
+import django.utils.timezone
 from django.db.models.base import Model
 from django.db.models.fields import BooleanField, CharField, DateTimeField, SlugField, UUIDField
+from django.db.models.fields.files import ImageField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
 from django.core.validators import RegexValidator
+from rest_framework.fields import DurationField
 from theatre_booking.Languages import LANGUAGES
 from mptt.models import MPTTModel, TreeForeignKey
 from django.db.models.deletion import DO_NOTHING
@@ -52,10 +55,14 @@ class Movie(models.Model):
 
     id = UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     name = SlugField(max_length=255)
+    release_date = models.DateTimeField(default=django.utils.timezone.now)
+    length = models.DurationField(default='00:00:00')
     format = CharField(max_length=10, choices=FORMAT)
-    language = CharField(max_length=100, choices=LANGUAGES)
+    language = CharField(max_length=100, default='en', choices=LANGUAGES)
     certification = CharField(max_length=20, choices=CERTIFICATION)
+    movie_cover = ImageField(upload_to='movie_covers/', null=True)
     genre_id = ManyToManyField(Genre, null=True)
+    region_id = ManyToManyField(Region, null=True, blank=True)
     in_theatres = BooleanField(default=True)
     date_created = DateTimeField(auto_now_add=True, null=True)
 
@@ -67,10 +74,16 @@ class Theatre(models.Model):
     id = UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     name = CharField(max_length=255,)
     region_id = ForeignKey(Region, on_delete=models.PROTECT)
+    movie_id = ManyToManyField(Movie, null=True, blank=True)
     date_created = DateTimeField(auto_now_add=True, null=True)
 
+    # def __str__(self):
+    #     return self.name
+
     def __str__(self):
-        return self.name
+        lst_str = str(self.id).split('-')
+        code = "".join(lst_str[:2])
+        return ("{}-{}".format(self.name, code))
 
 
 class Screen(models.Model):
@@ -80,7 +93,7 @@ class Screen(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.name
+        return ("{}-{}".format(self.name, self.theatre_id))
 
 
 class Showtime(models.Model):
@@ -92,8 +105,8 @@ class Showtime(models.Model):
     movie_id = models.ForeignKey(Movie, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
-    def __str__(self):
-        return str(self.start_time)
+    # def __str__(self):
+    #     return str(self.start_time)
 
     def clean(self):
         if self.start_time >= self.end_time:

@@ -14,13 +14,17 @@ class RegionAdmin(admin.ModelAdmin):
 
 class MovieAdmin(admin.ModelAdmin):
     model = Movie
-    list_display = ['id', 'name', 'format', 'language',
-                    'certification', 'genres', 'in_theatres', 'date_created']
+    list_display = ['id', 'name', 'release_date', 'length', 'format', 'language',
+                    'certification', 'movie_cover', 'genres', 'regions', 'in_theatres', ]
 
     def genres(self, obj):
-        genres = obj.genre.all()
+        genres = obj.genre_id.all()
         genres = ', '.join([str(i) for i in genres])
         return genres
+
+    def regions(self, obj):
+        regions = obj.region_id.all()
+        return (', '.join([str(i) for i in regions]))
 
     formfield_overrides = {
         models.ManyToManyField: {
@@ -43,7 +47,17 @@ class GenreAdmin(admin.ModelAdmin):
 
 class TheatreAdmin(admin.ModelAdmin):
     model = Theatre
-    list_display = ['id', 'name', 'region_id', 'date_created']
+    list_display = ['id', 'name', 'region_id', 'movies', 'date_created']
+
+    def movies(self, obj):
+        movies = obj.movie_id.all()
+        return (', '.join([str(i) for i in movies]))
+
+    formfield_overrides = {
+        models.ManyToManyField: {
+            'widget': CheckboxSelectMultiple
+        }
+    }
 
 
 class ScreenAdmin(admin.ModelAdmin):
