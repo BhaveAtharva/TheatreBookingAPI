@@ -63,7 +63,7 @@ class Movie(models.Model):
     movie_cover = ImageField(upload_to='movie_covers/', null=True)
     genre_id = ManyToManyField(Genre, null=True)
     region_id = ManyToManyField(Region, null=True, blank=True)
-    in_theatres = BooleanField(default=True)
+    in_theatres = BooleanField(default=False)
     date_created = DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
@@ -111,6 +111,8 @@ class Showtime(models.Model):
     def clean(self):
         if self.start_time >= self.end_time:
             raise ValidationError('Start Time should be before End Time')
+        if self.start_time < self.movie_id.release_date:
+            raise ValidationError("Can't Schedule before release data")
         return super().clean()
 
     class Meta:

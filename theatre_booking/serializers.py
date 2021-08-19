@@ -9,7 +9,7 @@ class RegionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Region
         # fields = ['id', 'city_name', 'state_name', 'country_name']
-        fields = '__all__'
+        fields = ('__all__')
 
 
 class MovieSerializer(serializers.ModelSerializer):

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'djoser',
     'drf_yasg',
     'smart_selects',
-    'cities_light',
+    # 'cities_light',
     'djmoney',
     'users',
     'theatre_booking',

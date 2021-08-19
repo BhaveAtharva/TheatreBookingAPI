@@ -1,3 +1,4 @@
+from rest_framework import response
 from theatre_booking import serializers
 from theatre_booking.models import Movie, Region, Showtime, Theatre
 from theatre_booking.serializers import MovieSerializer, RegionSerializer, ShowtimeSerializer, TheatreSerializer
@@ -34,10 +35,22 @@ class HomeViewsets(viewsets.ViewSet):
 class ShowtimeViewsets(viewsets.ViewSet):
     # serializer_class= TheatreSerializer
 
-    def get_theatre(self, request, **kwargs):
-        print(kwargs['id'], kwargs['region'])
-        region = Region.objects.get(city_name=kwargs['region'].capitalize())
-        queryset = Theatre.objects.filter(region_id=region)
-        context = {'movie_id': kwargs['id']}
-        serilizer = TheatreSerializer(queryset, context=context, many=True)
-        return Response(serilizer.data)
+    def choose_theatre_showtime(self, request, **kwargs):
+        # print(kwargs['id'], kwargs['region'])
+        try:
+            region = Region.objects.get(
+                city_name=kwargs['region'].capitalize())
+        except Region.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if region:
+            try:
+                queryset = Theatre.objects.filter(region_id=region)
+                context = {'movie_id': kwargs['id']}
+                serilizer = TheatreSerializer(
+                    queryset, context=context, many=True)
+                return Response(serilizer.data)
+            except Theatre.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # @swagger_auto_schema(responses={200: TheatreSerializer(many=True)}, request_body=ShowtimeSerializer)
+    # def post_showtime(slef, request, **kwargs):
